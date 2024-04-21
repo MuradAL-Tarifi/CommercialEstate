@@ -118,7 +118,7 @@
                                 Welcome to Commercial Estate
                             </h2>
                             <p class="wow fadeInUp" data-wow-delay=".5s">
-                                Buy and sell everything from ready-made designs to photos
+                                Buy and sell everything About Real Estate
                             </p>
                         </div>
                         <div class="search-form wow fadeInUp" data-wow-delay=".7s">
@@ -170,7 +170,7 @@
                         <div class="category-slider">
                             @foreach (var item in Model.Categorys)
                             {
-                                <a href="category.html" class="single-cat">
+                                <a class="single-cat">
                                     <div class="icon">
                                         <img src="~/Images/@item.CategoryPhoto" alt="#" />
                                     </div>
@@ -198,7 +198,7 @@
             </div>
             <div class="single-head">
                 <div class="row">
-                    @foreach (var item in Model.Products.Take(50))
+                    @foreach (var item in Model.Products.Take(50).Where(x=>x.IsSold==false))
                     {
                         <div class="col-lg-4 col-md-6 col-12">
                             <!-- Start Single Grid -->

@@ -30,6 +30,8 @@ namespace CommercialEstate.Models
         public int? CategoryId { get; set; }
         public int? UserId { get; set; }
         public DateTime Expire { get; set; }
+        public bool IsSold { get; set; }
+        public int? SoldTo { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual Users User { get; set; }

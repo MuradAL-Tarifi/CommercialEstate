@@ -201,13 +201,13 @@ namespace CommercialEstate.Areas.Customer.Controllers
             mm.To.Add(email);
             mm.Subject = "password chanded successfully.";
             mm.Body = "We are excited to tell you that your password chanded successfully.\n" + "Your New Password : " + userPass.Password;
-            mm.From = new MailAddress("CommercialEstatewebsite12@gmail.com");
+            mm.From = new MailAddress("commercialestate46@gmail.com");
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.Port = 587;
             smtp.UseDefaultCredentials = false;
             smtp.EnableSsl = true;
-            smtp.Credentials = new System.Net.NetworkCredential("CommercialEstatewebsite12@gmail.com", "8974563120");
+            smtp.Credentials = new System.Net.NetworkCredential("commercialestate46@gmail.com", "CommercialEstate123456");
             smtp.Send(mm);
 
 
@@ -218,6 +218,27 @@ namespace CommercialEstate.Areas.Customer.Controllers
             db.SaveChanges();
 
         }
+
+        [NonAction]
+        public void SendSoldEmail(string email)
+        {
+            var userPass = db.Users.Where(x => x.Email == email).ToList().FirstOrDefault();
+
+            MailMessage mm = new MailMessage();
+            mm.To.Add(email);
+            mm.Subject = "Real Estate Sold.";
+            mm.Body = "We are excited to tell you that your Real Estate Sold To "+ userPass.Email + " Please Communicate To Continue the steps";
+            mm.From = new MailAddress("commercialestate46@gmail.com");
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.EnableSsl = true;
+            smtp.Credentials = new System.Net.NetworkCredential("commercialestate46@gmail.com", "CommercialEstate123456");
+            smtp.Send(mm);
+
+        }
+
         [NonAction]
         public string CreateRandomPassword(int PasswordLength)
         {
@@ -876,8 +897,8 @@ namespace CommercialEstate.Areas.Customer.Controllers
                                 notification.UserId = item.Product.UserId;
                                 db.Add(notification);
                                 var changeId = db.Product.Find(item.ProductId);
-                                changeId.UserId = uid;
-
+                                changeId.SoldTo = uid;
+                                changeId.IsSold = true;
                             }
                             foreach (var item in Cart)
                             {
@@ -885,6 +906,7 @@ namespace CommercialEstate.Areas.Customer.Controllers
                                 db.Remove(RemoveCart);
                             }
                             db.SaveChanges();
+                            SendSoldEmail(CheckoutVM.Users.Email);
                         }
                         else
                         {
@@ -904,7 +926,8 @@ namespace CommercialEstate.Areas.Customer.Controllers
                                 notification.UserId = item.Product.UserId;
                                 db.Add(notification);
                                 var changeId = db.Product.Find(item.ProductId);
-                                changeId.UserId = uid;
+                                changeId.SoldTo = uid;
+                                changeId.IsSold = true;
 
                             }
                             foreach (var item in Cart)
@@ -913,6 +936,7 @@ namespace CommercialEstate.Areas.Customer.Controllers
                                 db.Remove(RemoveCart);
                             }
                             db.SaveChanges();
+                            SendSoldEmail(CheckoutVM.Users.Email);
                         }
                     }
 
